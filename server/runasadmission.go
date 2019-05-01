@@ -9,9 +9,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// RunAsUserAdmission Use this struct to verify the Admission review
 type RunAsUserAdmission struct {
 }
 
+// HandleAdmission - The main code that captures the AdmissionRequest to be used to verify
 func (*RunAsUserAdmission) HandleAdmission(review *v1beta1.AdmissionReview) error {
 
 	// TODO perform check here.
