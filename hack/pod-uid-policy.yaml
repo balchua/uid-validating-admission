@@ -1,0 +1,23 @@
+kind: bal.io/pod-uid-policy
+apiVersion: v1alpha1
+spec:
+  ignoreOnFailure: true
+  excludeNamespaces:
+  - name: kube-system
+    description: kube-system all kubernetes admin components
+  - name: kube-public
+    description: public namespace
+  - name: validator
+    description: The validator webhook namespace
+  includeNamespaces:
+  - name: dev
+    uids:
+     - uid: 1000
+     - uid: 1100
+     - uid: 1200
+  - name: uat
+    uids:
+     - uid: 2000
+     - uid: 2100
+     - uid: 2200
+    

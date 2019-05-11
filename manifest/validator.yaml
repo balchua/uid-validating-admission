@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uid-admission
+  namespace: validator
+data:
+  pod-uid-policy.yaml: |-
+    kind: bal.io/pod-uid-policy
+    apiVersion: v1alpha1
+    spec:
+      ignoreOnFailure: false
+      excludeNamespaces:
+      - name: kube-system
+        description: kube-system all kubernetes admin components
+      - name: kube-public
+        description: public namespace
+      - name: validator
+        description: The validator webhook namespace
+      includeNamespaces:
+      - name: dev
+        uids:
+        - uid: 1000
+        - uid: 1100
+        - uid: 1200
+      - name: uat
+        uids:
+        - uid: 2000
+        - uid: 2100
+        - uid: 2200
+      
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: uid-admission-certs
+  namespace: validator
+type: Opaque
+data:
+  cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUQzekNDQXNlZ0F3SUJBZ0lVRVVCMFNsMVdwcGxsRlIybTBRaUxKSFYraWFnd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0ZERVNNQkFHQTFVRUF3d0pNVEkzTGpBdU1DNHhNQjRYRFRFNU1EVXhNVEF4TkRnd01Gb1hEVEl3TURVeApNREF4TkRnd01Gb3diREVMTUFrR0ExVUVCaE1DVTBjeEVqQVFCZ05WQkFjVENWTnBibWRoY0c5eVpURU5NQXNHCkExVUVDaE1FU1ZOQlVERU1NQW9HQTFVRUN4TURRMEpKTVN3d0tnWURWUVFERXlOMWFXUXRkbUZzTG5aaGJHbGsKWVhSdmNpNXpkbU11WTJ4MWMzUmxjaTVzYjJOaGJEQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQwpBUW9DZ2dFQkFNM1YxZ1RHb1hObUFJSDEyNDFMTVZHYm5EaXB6TCtxU1hXc0NweHFrMkJUU0RkU0JDWHlRTkRQCnZKUDJBRTZrTTlmYUxnQm5sNnMvK2VieGxFNG1FOWE0S1J4WE9CdGxCTXVZc21iVGRjN2UzMVErdUdaaWNWdXgKbEdWTnY4dThtWTdTNGJTalA3L1lFUXZMRGdQV3JmNU84Q3FWa292VFpGaFJCdFI1ZzhNMThYUjdLYnhka0NDdApjQVFkd0Q0ODR4UWp6bUFRcGZyZ0Z0ZTN2UXlLeDUvcDZZVis4MTQvYkZaVldYeDIwWG5KZGhNUXJMV0t1UTIvClJ3UjUrVmJvTHpzZXRCTTRJcllNZURDYXBicHNPVVhYOTZxTjFFNVo3WHVLbkxhblFHRzU5cm1TeFMwVE1HSCsKeTVwRG0wdWsvaUJwQjkvTFdVM0FLOFBkb2xTTFFZMENBd0VBQWFPQjBEQ0J6VEFPQmdOVkhROEJBZjhFQkFNQwpCYUF3RXdZRFZSMGxCQXd3Q2dZSUt3WUJCUVVIQXdFd0RBWURWUjBUQVFIL0JBSXdBREFkQmdOVkhRNEVGZ1FVCm9IemQ4RUNRUXRtcnhGNlovakxpM3dLOHMxZ3dId1lEVlIwakJCZ3dGb0FVQXlBOVM0NEQ3SHhRb1UrRkxCeDAKZG9UTFBuQXdXQVlEVlIwUkJGRXdUNElqZFdsa0xYWmhiQzUyWVd4cFpHRjBiM0l1YzNaakxtTnNkWE4wWlhJdQpiRzlqWVd5Q0ZYVnBaQzEyWVd3dWRtRnNhV1JoZEc5eUxuTjJZNElSZFdsa0xYWmhiQzUyWVd4cFpHRjBiM0l3CkRRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFBeGdyVFdUUHJWcS9sZmJSOG5CYzFBb0hkblpxRlZTRmZiSm1HTkcKdGJkTWptL1EyQ3U0cERNVWRjYjU3eGF6M2RUdHFCOEdBVWFyYjlqR3psS1d2NnVjQmtCZVlHbjlLQ0Nzc3RIdgozb3Vhcm4yMXM0NzJ4dEQ2K1M3TjYvKzdMSDM1a2pqNGZhemVXWC9yVlloczE2b0dPWDBXNk9HN3RTR3BHeDgrCkdaVDRjY1E0UG5EZXg2ZjVleVNpYXA2TWNIYUxXMWNvZ1QxeG9mMlF1WFZvdnhrZEhrVmpRd0F2VDdwL1NxMmMKc0NhMm4yVjcxdGFVb3QrZHp0YWxGVHlFUlBDUWZtVlhBTExjdXFzSEFJaFRQRmJIcHlDM2I0aWJ0NXExMCtZVApEdjMyUWpSODVzK0o0K1JBUzVhd0loSytPS3NTR1ZRUHdOMjdZbWhtUUdBc1RWUT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  key.pem: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBemRYV0JNYWhjMllBZ2ZYYmpVc3hVWnVjT0tuTXY2cEpkYXdLbkdxVFlGTklOMUlFCkpmSkEwTSs4ay9ZQVRxUXoxOW91QUdlWHF6LzU1dkdVVGlZVDFyZ3BIRmM0RzJVRXk1aXladE4xenQ3ZlZENjQKWm1KeFc3R1VaVTIveTd5Wmp0TGh0S00vdjlnUkM4c09BOWF0L2s3d0twV1NpOU5rV0ZFRzFIbUR3elh4ZEhzcAp2RjJRSUsxd0JCM0FQanpqRkNQT1lCQ2wrdUFXMTdlOURJckhuK25waFg3elhqOXNWbFZaZkhiUmVjbDJFeENzCnRZcTVEYjlIQkhuNVZ1Z3ZPeDYwRXpnaXRneDRNSnFsdW13NVJkZjNxbzNVVGxudGU0cWN0cWRBWWJuMnVaTEYKTFJNd1lmN0xta09iUzZUK0lHa0gzOHRaVGNBcnc5MmlWSXRCalFJREFRQUJBb0lCQVFDdEhXNmRuNjFFRUFMWApTcjczcThqeitPcy80TmQ2VDY3dXo5NHd4WlhqeXNlTzkyVFR3Vlp3Q0hkeS9kQXVVLzNpU2Zhc2tuUEdMTTF5ClJiWFVzRU81TURRclNOUEFmb3EwN1YwR0RFMGx5dDZMelNCcnc5blJJNTVLUVVUUkJuTWo0d3EvVVJtWnNSQk4KR2Q5VXJTYXpIeEx3emRGdDFrR3I0YUhiNjhNODFzc3ErZmxwZlFpdUtFempjZi9CWW9LQi9wMEs2RHp2Yy9xZwpmMWRaeGFMVWU1QjlFRDZBWERPaTR6a0xBR29rUTdhSnRWelo5MEZVWXNOamZYdTdXNHZZSExkVGhVemtmWWMyClVFVGtrT3JwLy84SnRkNWhiZVR3SUlVNXcweEk3M2plRzdSc1paZEI4azVMZVgvN1h3L2ZyTFlxbTBwWE1pM0cKODA1OUdiQkJBb0dCQU5OL2V6dlVOam5jRE1HTXZzdnZmeURFUFBVNnpOeEtwV2pRTWhJaE51S00vNXNKc3hRMgppZ3MvMmJNbk5udXVjbzNyQnFCMHBVWTYxSlUvZldxbjdHeHNyd0JWY1RaY0FmRnU4VXIwWllaSnJpUGQ1ZTJECjM3SDFqRmhIZTNvSXdqVWRNb2Y5NVl2Vm9ueVpycGJZZEdmWjlVSXhZU0hNM0Z3Ri9ubjI5cDI5QW9HQkFQa2wKVkdiUW04K1dDVmNqRXVaVy9SZUZ1THViMmZhMnJSbnJOLzVwcjVvdEdvN3lQd2VFZ3ZhWUFBWFp4blovYUVPbQpxYUZTWFI0RVhjV3JneGZzcTV3bHJqdkx6TzVxTTdjVlRWS3Jic0x5MHQ5Mmo2OUlmWnlzR0RTSHVvbC90OHcvCnFodDBtcW9scFJuRjBQVUd0QlN6R2xWNEF3VmZoOXdnd2Q0UXptZ1JBb0dCQUtJS3RqeHNwdTlGclhCTmlaRnUKZVpSOVJjY051ZysrRVdWd3Zpd3R6b05kVENsWkVSK1hlY1NNc3hzVUhDWSt6ZjMxNkNuZnRSRk4yYnBQM3FOcwo3VE5WUWUrYmh4WURBR29lZWpqWGIwR29DZ2ZvNTFWSENJaXNmVTdWMWNEMkhQWGMzTzVjbFJiQ0k3QWJmeXlMCnd3UWVkazYwenBxNi9zcHl2VHB0QVI1eEFvR0JBTkM2Sm5pd2dpaXFZUTdnY29BSkZxWXpRRzNraHZtN1YxQWsKa05lU3dTd2daMlNrckl0bXg3VkI2SnIrTk5lbnE3a3BrbWwxc0U5cWh3a0l4SjR4aUNBY0xWa3BSM25oL1l0Lwp6RFRiTE1Na1hlZ2Ewd3VkWnFid1FxTVhwdjUwd28zYU5IQW1BMEZTb252eUR6cUlNQ3c3VkcrUVNLK2l0aGFFClZ3YnMrNCtSQW9HQVp0UnBlMHdXUm9GemxFczRuMnZEN2R5Nyt2NXowejMvUTJFeDJtVGJCZGg1eFgyVDlZL2kKY0ZlSVJKT1RMMDBuQk12U0Q3VkdONENoSysxaEhLbFpDNXN3UUdvVE5pUzdrQ1VnRXcrV1A2cFYrbFNxT3FTZApONCtsMlhsSmp6RXRDbHRDemp5TTVrclFGTWdkQmUwekppVThPMDg0NXlwL2pVNzIwS2txVEFNPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uid-val
+  namespace: validator
+  labels:
+    name: uid-admission
+spec:
+  ports:
+  - name: webhook
+    port: 443
+    targetPort: 9443
+  selector:
+    name: uid-admission
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uid-admission
+  namespace: validator
+  labels:
+    name: uid-admission
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: uid-admission
+  template:
+    metadata:
+      name: uid-admission 
+      labels:
+        name: uid-admission
+    spec:
+      containers:
+        - name: uid-validating-webhook
+          image: localhost:32000/uid-validating-webhook:1.0.0
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "/usr/local/bin/uid-validating-webhook" ]
+          resources:
+            limits:
+              memory: 50Mi
+              cpu: 300m
+            requests:
+              memory: 50Mi
+              cpu: 300m
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
+            - name: pod-uid-policy
+              mountPath: /etc/webhook
+              readOnly: true
+          securityContext:
+            readOnlyRootFilesystem: true
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: uid-admission-certs
+        - name: pod-uid-policy
+          configMap:
+            name: uid-admission
+            items:
+            - key: pod-uid-policy.yaml
+              path: pod-uid-policy.yaml            
+
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: uid-admission
+webhooks:
+  - name: uid-admission.balchua.github.com
+    clientConfig:
+      service:
+         name: uid-val
+         namespace: validator
+         path: "/"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVhZ0F3SUJBZ0lKQUxCbzk5cGFCeEVPTUEwR0NTcUdTSWIzRFFFQkN3VUFNQlF4RWpBUUJnTlYKQkFNTUNURXlOeTR3TGpBdU1UQWVGdzB4T1RBME16QXlNek14TURaYUZ3MDBOakE1TVRVeU16TXhNRFphTUJReApFakFRQmdOVkJBTU1DVEV5Tnk0d0xqQXVNVENDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DCmdnRUJBTk9ETWJzYWF0eitvWDZOY09HMlZ1SDlmNWoyd0VyUURjdXUrcVdrcTd4aUdKVWVQZFVXVEJTSWFSaEcKVEhETVhhSjMwNjVXUW5sTWxPZXV3NGNYc1Yvc2RCNGlwRkNBUy9UWkJLb1krS3FQWG4vWXA5WkNPa0E2dHlCUQpzOE11Tk03bU9mZE90TFh6RzhKaS9weWhGYXdNbVVhaUFRRUhpbzdYUG51UXNWSkI0V0VUZ2tkd0taM0o4cjk2Ck8vTGY1bkdLZUdqYTZ3bUtnTVVQWDV3djNjY3BLcU0rMFJISmN6N24zNnlUQ0ZTMjR5cFUxZzNWbURyQ3NOMFkKcHNtR3BUSjJGeCs4clQ0dzJ5TmVlZGZFaFRMQW5zSTJSSHZ0LzY3L1ovNUZxQUJBdklmSFRlOG5PZGVEOHBHZgpoc2V6cWN6WGdYaDI5KzZRZ1dmeTZtcjYzQmNDQXdFQUFhTlRNRkV3SFFZRFZSME9CQllFRkFNZ1BVdU9BK3g4ClVLRlBoU3djZEhhRXl6NXdNQjhHQTFVZEl3UVlNQmFBRkFNZ1BVdU9BK3g4VUtGUGhTd2NkSGFFeXo1d01BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBSVdCWWM1ZnBBVlNHbFkwd05nNAo3a2dwU21LM29xamJKUmNkWUlmUGppN2xBQ2FDRFhFTFNWbVNuSnNTSS9vdjQ3TTNCZlJYTmlEVUQ4RGhydVlTCkxJa1FKcXJJL2tYU25kVWlkaWZadktSQmVUOHk5NGs4Tkh1aWdPQitPejl4MGF4UjA1MWhMdmt6NkpsOTBWV20KRHJOcVJXL21kM2ltT05nQ3NHdGRTRXp2SXhVOG1FV2FXOEFqWFlSbXZkUjBTKzZFamgxQlliWjRNdk9qUGlETAptQWErUk05MHRnOEVXWTYzK3hjaDNueFhxOUxIWEFtTkp5UitlSnBIOTBCckJnbmI0azVZQkNkdHZHQzA2MmRVCmRGeEFDbE9yeUIzMWJIa0tReXlVVk9zM1NLMnN5QWx6a2NhWklYeTNSeWN0Rnh0TGRNRUN3UldEZFZtNUlOWUYKMWlFPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    rules:
+      - operations: ["CREATE","UPDATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]

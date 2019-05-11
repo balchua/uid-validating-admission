@@ -1,0 +1,18 @@
+{
+    "hosts": [
+        "uid-val.validator.svc.cluster.local",
+        "uid-val.validator.svc",
+        "uid-val.validator"
+    ],
+    "CN": "uid-val.validator.svc.cluster.local",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [{
+        "C": "SG",
+        "L": "Singapore",
+        "O": "ISAP",
+        "OU": "CBI"
+    }]
+}

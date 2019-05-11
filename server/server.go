@@ -4,7 +4,9 @@ import (
 	"crypto/tls"
 	"io/ioutil"
 
+	"github.com/balchua/uid-validating-webhook/config"
 	"github.com/sirupsen/logrus"
+
 	"k8s.io/api/admission/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
@@ -17,6 +19,7 @@ var (
 	scheme          = runtime.NewScheme()
 	codecs          = serializer.NewCodecFactory(scheme)
 	tlscert, tlskey string
+	AppConfig       config.Configuration
 )
 
 type AdmissionController interface {

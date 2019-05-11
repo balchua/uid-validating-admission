@@ -1,0 +1,7 @@
+kubectl create secret generic sample-cert \
+        --from-file=key.pem=/etc/webhook/certs/key.pem \
+        --from-file=cert.pem=/etc/webhook/certs/cert.pem \
+        --dry-run -o yaml
+
+docker save localhost:32000/uid-validating-webhook:1.0.0 > uid-validating-webhook.tar
+microk8s.ctr -n k8s.io image import uid-validating-webhook.tar        
